@@ -1,0 +1,52 @@
+<!-- Extending Base Template -->
+{% extends 'base.html' %}
+
+<!-- Tile Content -->
+{% block title %} Adoption Agency {% endblock %}
+
+<!-- Body Content -->
+{% block body %}
+
+<h1>Adoption Agency</h1>
+<h2>Pets</h2>
+<div>
+{% for pet in pets %}
+  <div>
+    <div class="card w-10 h-10" style="width: 18rem">
+      <!-- <img class="card-img-top" src="..." alt="Card image cap"> -->
+      <img src="{{ pet.photo_url }}" alt="Photo of {{ pet.name }} unavailable (Sorry probably not alive)">
+      <div class="card-body">
+      </div>
+    </div>
+
+    {% if pet.available %}
+    <p>
+      <span>
+        <a href="/{{ pet.id }}">
+        {{ pet.name }}</a>
+      </span>
+      <span>
+        <b>is available!</b>
+      </span>
+    </p>
+    {% else %}
+    <p>
+      <span>
+        <a href="/{{ pet.id }}">
+          {{ pet.name }}</a>
+      </span>
+      <span>
+        <b>is already in a loving home! (RIP)</b>
+      </span>
+    </p>
+    {% endif %}
+  </div>
+{% endfor %}
+</div>
+
+<div>
+  <a href="/add">
+  <button class="btn btn-success" type="button">Add Pet</button></a>
+</div>
+
+{% endblock%}
