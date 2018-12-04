@@ -19,27 +19,21 @@
       </div>
     </div>
 
-    {% if pet.available %}
     <p>
       <span>
         <a href="/{{ pet.id }}">
         {{ pet.name }}</a>
       </span>
       <span>
-        <b>is available!</b>
+        <b>
+          {% if pet.available %}
+            is available!
+          {% else %}
+            is already in a loving home! (RIP)
+          {% endif %}
+        </b>
       </span>
     </p>
-    {% else %}
-    <p>
-      <span>
-        <a href="/{{ pet.id }}">
-          {{ pet.name }}</a>
-      </span>
-      <span>
-        <b>is already in a loving home! (RIP)</b>
-      </span>
-    </p>
-    {% endif %}
   </div>
 {% endfor %}
 </div>

@@ -2,7 +2,7 @@ from flask import Flask, request, session, render_template, redirect, flash
 from flask_debugtoolbar import DebugToolbarExtension
 from models import db, connect_db, Pet
 from forms import AddPet, EditPet
-
+from secrets import PETFINDER_API_KEY
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql:///adopt'
@@ -41,8 +41,12 @@ def add_pet():
         age = form.age.data
         notes = form.notes.data
 
-        new_pet = Pet(name=name, species=species,
-                      photo_url=photo_url, age=age, notes=notes)
+        new_pet = Pet(
+            name=name,
+            species=species,
+            photo_url=photo_url,
+            age=age,
+            notes=notes)
 
         db.session.add(new_pet)
         db.session.commit()
