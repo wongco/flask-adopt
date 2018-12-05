@@ -12,7 +12,7 @@
 <div>
     <div class="card w-10 h-10" style="width: 18rem">
       <!-- <img class="card-img-top" src="..." alt="Card image cap"> -->
-      <img src="{{ random_pet.photo_url }}" alt="Photo of {{ random_pet.name }} unavailable (Sorry probably not alive)">
+      <img class="img-fluid" src="{{ random_pet.photo_url }}" alt="Photo of {{ random_pet.name }} unavailable (Sorry probably not alive)">
       <div class="card-body">
       </div>
     </div>
@@ -35,12 +35,12 @@
   </div>
 
 <h2>All Our Pets</h2>
-<div>
+<div class="row">
 {% for pet in pets %}
-  <div>
+  <div class="mx-2">
     <div class="card w-10 h-10" style="width: 18rem">
       <!-- <img class="card-img-top" src="..." alt="Card image cap"> -->
-      <img src="{{ pet.photo_url }}" alt="Photo of {{ pet.name }} unavailable (Sorry probably not alive)">
+      <img class="img-fluid" src="{{ pet.photo_url }}" alt="Photo of {{ pet.name }} unavailable (Sorry probably not alive)">
       <div class="card-body">
       </div>
     </div>
