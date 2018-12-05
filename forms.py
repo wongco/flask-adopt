@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, IntegerField, BooleanField
+from wtforms import StringField, IntegerField, BooleanField, RadioField
 from wtforms.validators import InputRequired, Optional, URL, AnyOf, NumberRange
 
 
@@ -31,3 +31,12 @@ class EditPet(FlaskForm):
     photo_url = StringField("Photo URL", validators=[Optional(), URL()])
     notes = StringField("Notes")
     available = BooleanField("Available")
+
+
+class FindPet(FlaskForm):
+    """ Form for searching for a new pet from PetFinder """
+
+    age = RadioField('Age', choices=[('any', 'Any'), ('Baby', 'Baby'), (
+        'Young', 'Young'), ('Adult', 'Adult'), ('Senior', 'Senior')])
+    species = RadioField('Species', choices=[('any', 'Any'), ('barnyard', 'Barnyard'), ('bird', 'Bird'), (
+        'cat', 'Cat'), ('dog', 'Dog'), ('horse', 'Horse'), ('reptile', 'Reptile'), ('smallfurry', 'Smallfurry')])

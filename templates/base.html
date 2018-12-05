@@ -17,7 +17,7 @@
       integrity="sha384-DfbCiBdRiiNWvRTbHe5X9IfkezKzm0pCrZSKc7EM9mmSl/OyckwbYk3GrajL8Ngy"
       crossorigin="anonymous"
     />
-    <link rel="stylesheet" href="/static/style.css">
+    <link rel="stylesheet" href="/static/style.css" />
   </head>
 
   <body class="container">
@@ -38,13 +38,9 @@
       </button>
       <div class="collapse navbar-collapse" id="navbarText">
         <ul class="navbar-nav mr-auto">
-          <li class="nav-item"><a class="nav-link" href="/">Home</a></li>
-          <!--
-            <li class="nav-item">
-              <a class="nav-link" href="/users">Users</a>
-            </li>
-          -->
+          <li class="nav-item"><a class="nav-link" href="/">Home</a></li>          
           <li class="nav-item"><a class="nav-link" href="/add">Add Pet</a></li>
+          <li class="nav-item"><a class="nav-link" href="/search">Find a New Pet</a></li>
         </ul>
         <span class="navbar-text">Designed by Jen & Gin (& Tonic)</span>
       </div>
@@ -52,10 +48,10 @@
 
     <!-- Flash Message Div Block -->
     <div class="my-2">
-        {% for flash in get_flashed_messages() %}
-        <p>{{ flash }}</p>
-        {% endfor %}
-      </div>
+      {% for flash in get_flashed_messages() %}
+      <p>{{ flash }}</p>
+      {% endfor %}
+    </div>
 
     {% block body %} {% endblock %}
 

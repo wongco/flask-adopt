@@ -1,8 +1,8 @@
-from flask import Flask, render_template, redirect, flash
+from flask import Flask, render_template, redirect, flash, session
 from flask_debugtoolbar import DebugToolbarExtension
 from models import db, connect_db, Pet
-from forms import AddPet, EditPet
-from petfinder_api_requests import get_random_pet
+from forms import AddPet, EditPet, FindPet
+from petfinder_api_requests import get_random_pet, get_filtered_pets
 from random import randint
 from secret import FLASK_SECRET_KEY, POSTGRES_DB_PATH
 
@@ -61,10 +61,8 @@ def add_pet():
 
         # create copy of form dict
         new_pet_attr = dict(form.data)
-
         # remove csrf_otken from pet attributes
         del new_pet_attr['csrf_token']
-
         # unpack dict properties as keyword arguments for Pet Creation
         new_pet = Pet(**new_pet_attr)
 
@@ -99,3 +97,36 @@ def edit_pet(pet_id):
 
     else:
         return render_template('pet_details.html', pet=pet, form=form)
+
+
+@app.route('/search', methods=['GET', 'POST'])
+def search_pet():
+    """ Pet search form: handle searching. """
+
+    form = FindPet()
+
+    # POST Handling
+    if form.validate_on_submit():
+        # create copy of form dict
+        pet_search_attr = dict(form.data)
+        # remove csrf_otken from pet attributes
+        del pet_search_attr['csrf_token']
+
+        # unpack dict properties as keyword arguments for Pet Search
+        pet = get_filtered_pets(**pet_search_attr)
+
+        session['pet'] = pet
+
+        return redirect('/results')
+
+    else:
+        return render_template('pet_search.html', form=form)
+
+
+@app.route('/results', methods=['GET'])
+def display_pets_found():
+    """ Pet search results: handles displaying. """
+
+    pet = session['pet']
+    # retrieve session data for info about pets, send to render
+    return render_template('pet_results.html', pet=pet)
