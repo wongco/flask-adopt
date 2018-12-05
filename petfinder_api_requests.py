@@ -19,8 +19,9 @@ def get_random_pet():
     }
 
     raw_resp = requests.get(f'{BASE_URL}/pet.getRandom', params=params)
-
     resp = raw_resp.json()
+
+    # extract info out from JSON request
     name = resp['petfinder']['pet']['name']['$t']
     age = resp['petfinder']['pet']['age']['$t']
     if 'photos' in (resp['petfinder']['pet']['media']):

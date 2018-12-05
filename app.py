@@ -61,7 +61,7 @@ def add_pet():
 
         # create copy of form dict
         new_pet_attr = dict(form.data)
-        # remove csrf_otken from pet attributes
+        # remove csrf_token from pet attributes
         del new_pet_attr['csrf_token']
         # unpack dict properties as keyword arguments for Pet Creation
         new_pet = Pet(**new_pet_attr)
@@ -109,14 +109,14 @@ def search_pet():
     if form.validate_on_submit():
         # create copy of form dict
         pet_search_attr = dict(form.data)
-        # remove csrf_otken from pet attributes
+        # remove csrf_token from pet attributes
         del pet_search_attr['csrf_token']
 
         # unpack dict properties as keyword arguments for Pet Search
         pet = get_filtered_pets(**pet_search_attr)
 
+        # save pet to session
         session['pet'] = pet
-
         return redirect('/results')
 
     else:
@@ -127,6 +127,7 @@ def search_pet():
 def display_pets_found():
     """ Pet search results: handles displaying. """
 
-    pet = session['pet']
     # retrieve session data for info about pets, send to render
+    pet = session['pet']
+
     return render_template('pet_results.html', pet=pet)
