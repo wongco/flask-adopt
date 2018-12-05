@@ -58,21 +58,20 @@ def add_pet():
 
     # POST Handling
     if form.validate_on_submit():
-        name = form.name.data
-        species = form.species.data
-        photo_url = form.photo_url.data
-        age = form.age.data
-        notes = form.notes.data
 
-        new_pet = Pet(
-            name=name,
-            species=species,
-            photo_url=photo_url,
-            age=age,
-            notes=notes)
+        # create copy of form dict
+        new_pet_attr = dict(form.data)
+
+        # remove csrf_otken from pet attributes
+        del new_pet_attr['csrf_token']
+
+        # unpack dict properties as keyword arguments for Pet Creation
+        new_pet = Pet(**new_pet_attr)
 
         db.session.add(new_pet)
         db.session.commit()
+
+        flash(f"{ new_pet.name } was added to the database!")
 
         return redirect('/')
 
