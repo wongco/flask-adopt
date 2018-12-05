@@ -3,17 +3,19 @@ from flask_debugtoolbar import DebugToolbarExtension
 from models import db, connect_db, Pet
 from forms import AddPet, EditPet
 from petfinder_api_requests import get_random_pet
+from random import randint
+from secret import FLASK_SECRET_KEY, POSTGRES_DB_PATH
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql:///adopt'
+app.config['SQLALCHEMY_DATABASE_URI'] = POSTGRES_DB_PATH
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SQLALCHEMY_ECHO'] = True
 
-# app.config['DEBUG_TB_INTERCEPT_REDIRECTS'] = False
+app.config['DEBUG_TB_INTERCEPT_REDIRECTS'] = False
 
-app.config['SECRET_KEY'] = "SECRET!"
+app.config['SECRET_KEY'] = FLASK_SECRET_KEY
 debug = DebugToolbarExtension(app)
-# app.debug = True
+
 
 connect_db(app)
 db.create_all()
@@ -29,8 +31,6 @@ def create_random_pet():
         photo_url=pet_data['photo_url'],
         age=pet_data['age'],
         notes=pet_data['notes'])
-    # import pdb
-    # pdb.set_trace()
     db.session.add(new_pet)
     db.session.commit()
 
@@ -41,10 +41,13 @@ def create_random_pet():
 def display_homepage():
     """ displays the homepage for the app  """
 
-    pets = Pet.query.all()
-    random_pet = create_random_pet()
+    pets_available = Pet.query.filter_by(available=True).all()
+    pets_owned = Pet.query.filter_by(available=False).all()
+    random_pet = pets_available[randint(0, len(pets_available) - 1)]
 
-    return render_template('/index.html', pets=pets, random_pet=random_pet)
+    # random_pet = create_random_pet()
+
+    return render_template('/pet_display.html', pets_owned=pets_owned, pets_available=pets_available, random_pet=random_pet)
 
 
 @app.route('/add', methods=['GET', 'POST'])
@@ -71,8 +74,6 @@ def add_pet():
         db.session.add(new_pet)
         db.session.commit()
 
-        # db add & commit stuff from api
-        # redirect to homepage after successfully adding pet
         return redirect('/')
 
     else:
@@ -93,7 +94,7 @@ def edit_pet(pet_id):
         pet.available = form.available.data
         db.session.commit()
 
-        flash(f'{ pet.name } details were updated.')
+        flash(f"{ pet.name }'s details were updated.")
 
         return redirect(f'/{pet.id}')
 

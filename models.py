@@ -23,15 +23,3 @@ class Pet(db.Model):
     age = db.Column(db.Integer, nullable=False)
     notes = db.Column(db.Text, nullable=True)
     available = db.Column(db.Boolean, nullable=False, default=True)
-
-
-# Create a single model, Pet. This models a pet potentially available for adoption:
-
-#     # id: auto-incrementing integer
-#     # name: text, required
-#     # species: text, required
-#     # photo_url: text, optional
-#     # age: integer, required
-#     # notes: text, optional
-# # available: true/false, required, should default to available
-# While setting up the project, add the Debug Toolbar.

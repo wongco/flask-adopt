@@ -11,26 +11,28 @@ def get_random_pet():
     species_types = ['cat', 'dog']
     animal = species_types[randint(0, 1)]
 
-    raw_resp = requests.get(
-        BASE_URL,
-        params={
-            'format': 'json',
-            'key': PETFINDER_API_KEY,
-            'output': 'basic',
-            'animal': animal
-        })
+    params = {
+        'format': 'json',
+        'key': PETFINDER_API_KEY,
+        'output': 'basic',
+        'animal': animal
+    }
+
+    raw_resp = requests.get(BASE_URL, params=params)
 
     resp = raw_resp.json()
     name = resp['petfinder']['pet']['name']['$t']
     age = resp['petfinder']['pet']['age']['$t']
     if 'photos' in (resp['petfinder']['pet']['media']):
-        photo_url = resp['petfinder']['pet']['media']['photos']['photo'][2][
-            '$t']
+        photo_url = resp['petfinder']['pet']['media']['photos']['photo'][2].get(
+            '$t')
     else:
         photo_url = None
+
     species = resp['petfinder']['pet']['animal']['$t']
+
     if 'breeds' in (resp['petfinder']['pet']):
-        notes = resp['petfinder']['pet']['breeds']['breed']['$t']
+        notes = resp['petfinder']['pet']['breeds']['breed'].get('$t')
     else:
         notes = None
 

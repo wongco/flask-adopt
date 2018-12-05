@@ -1,0 +1,75 @@
+<!-- Extending Base Template -->
+{% extends 'base.html' %}
+
+<!-- Tile Content -->
+{% block title %} Adoption Agency {% endblock %}
+
+<!-- Body Content -->
+{% block body %}
+
+<h1>Adoption Agency</h1>
+<h2>Featured Pet</h2>
+<div>
+    <div class="card w-10 h-10" style="width: 30rem">
+      <img class="img-thumbnail img-fluid" src="{{ random_pet.photo_url }}" alt="Photo of {{ random_pet.name }} unavailable (Sorry probably not alive)">
+    </div>
+
+    <p>
+      <span>
+        <a href="/{{ random_pet.id }}">
+        {{ random_pet.name }}</a>
+      </span>
+      <span>
+        <b>
+          {% if random_pet.available %}
+            is available!
+          {% else %}
+            is already in a loving home! (RIP)
+          {% endif %}
+        </b>
+      </span>
+    </p>
+  </div>
+
+<h2>All our available pets</h2>
+<div class="row">
+{% for pet in pets_available %}
+  <div class="mx-2">
+    <div class="card w-10 h-10" style="width: 15rem">
+      <img class="img-thumbnail img-fluid" src="{{ pet.photo_url }}" alt="Photo of {{ pet.name }} unavailable (Sorry probably not alive)">
+    </div>
+
+    <p>
+      <span>
+        <a href="/{{ pet.id }}">
+        {{ pet.name }}</a>
+      </span>
+      <span>
+        <b> is available!</b>
+      </span>
+    </p>
+  </div>
+{% endfor %}
+</div>
+
+<h2>Pets no longer available - They found a home!</h2>
+<div class="row">
+{% for pet in pets_owned %}
+  <div class="mx-2">
+    <div class="card w-10 h-10" style="width: 15rem">
+      <img class="img-thumbnail img-fluid" src="{{ pet.photo_url }}" alt="Photo of {{ pet.name }} unavailable (Sorry probably not alive)">
+    </div>
+
+    <p>
+      <span>
+        <a href="/{{ pet.id }}">
+        {{ pet.name }}</a>
+      </span>
+      <span>
+        <b> has found a home!</b>
+      </span>
+    </p>
+  </div>
+{% endfor %}
+</div>
+{% endblock%}

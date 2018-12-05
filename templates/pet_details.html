@@ -11,12 +11,10 @@
 
 <div>
   <h2>Name: {{ pet.name }}</h2>
+  {% if pet.photo_url%}
+  <img src="{{ pet.photo_url }}" alt="Photo of {{ pet.name }} unavailable (Sorry probably not alive)">
+  {% endif%}
   <ul>
-    {% if pet.photo_url%}
-    <li>
-      <img src="{{ pet.photo_url }}" alt="Photo of {{ pet.name }} unavailable (Sorry probably not alive)">
-    </li>
-    {% endif%}
     <li>
       Age: {{ pet.age }} year old
     </li>
@@ -28,23 +26,7 @@
 
 <div>
   <form action="/{{ pet.id }}" method="POST">
-  
-    {{ form.hidden_tag() }}
-  
-    {% for field in form
-           if field.widget.input_type != 'hidden' %}
-    <p>
-      {{ field.label }}
-      {{ field }}
-  
-      {% for error in field.errors %}
-      {{ error }}
-      {% endfor %}
-    </p>
-    {% endfor %}
-  
-    <button type="submit">Submit</button>
-  
+    {% include 'base_form.html' %}
   </form>
 </div>
 
