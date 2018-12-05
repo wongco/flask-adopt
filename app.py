@@ -1,8 +1,8 @@
-from flask import Flask, request, session, render_template, redirect, flash
+from flask import Flask, render_template, redirect, flash
 from flask_debugtoolbar import DebugToolbarExtension
 from models import db, connect_db, Pet
 from forms import AddPet, EditPet
-from secrets import PETFINDER_API_KEY
+from petfinder_api_requests import get_random_pet
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql:///adopt'
@@ -19,12 +19,32 @@ connect_db(app)
 db.create_all()
 
 
+def create_random_pet():
+    """Call get_random_pet from API and save to database and return pet instance"""
+
+    pet_data = get_random_pet()
+    new_pet = Pet(
+        name=pet_data['name'],
+        species=pet_data['species'],
+        photo_url=pet_data['photo_url'],
+        age=pet_data['age'],
+        notes=pet_data['notes'])
+    # import pdb
+    # pdb.set_trace()
+    db.session.add(new_pet)
+    db.session.commit()
+
+    return new_pet
+
+
 @app.route('/')
 def display_homepage():
     """ displays the homepage for the app  """
-    pets = Pet.query.all()
 
-    return render_template('/index.html', pets=pets)
+    pets = Pet.query.all()
+    random_pet = create_random_pet()
+
+    return render_template('/index.html', pets=pets, random_pet=random_pet)
 
 
 @app.route('/add', methods=['GET', 'POST'])

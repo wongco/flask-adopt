@@ -8,7 +8,33 @@
 {% block body %}
 
 <h1>Adoption Agency</h1>
-<h2>Pets</h2>
+<h2>Featured Pet</h2>
+<div>
+    <div class="card w-10 h-10" style="width: 18rem">
+      <!-- <img class="card-img-top" src="..." alt="Card image cap"> -->
+      <img src="{{ random_pet.photo_url }}" alt="Photo of {{ random_pet.name }} unavailable (Sorry probably not alive)">
+      <div class="card-body">
+      </div>
+    </div>
+
+    <p>
+      <span>
+        <a href="/{{ random_pet.id }}">
+        {{ random_pet.name }}</a>
+      </span>
+      <span>
+        <b>
+          {% if random_pet.available %}
+            is available!
+          {% else %}
+            is already in a loving home! (RIP)
+          {% endif %}
+        </b>
+      </span>
+    </p>
+  </div>
+
+<h2>All Our Pets</h2>
 <div>
 {% for pet in pets %}
   <div>
